@@ -1,20 +1,24 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import ProductList from "./components/ProductList";
-import ProductDetail from "./components/ProductDetail";
-import AddProduct from "./components/AddProduct";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
+  const isAuthenticated = localStorage.getItem("user");
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/add" element={<AddProduct />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/product/:id"
+        element={isAuthenticated ? <ProductDetail /> : <Navigate to="/login" />}
+      />
+    </Routes>
   );
 }
 
